@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="css/fontello.css">
+	<script src="utilidades.js"></script>
+	<title>Steamed Hams</title>
+
+	
+</head>
+<body onload="cargaPagina()">
+
+	<a href="index.html">
+		<div class="plate">
+		  <p class="script"></p>
+		  <p class="shadow text1">Steamed Hams</p>
+		  <p class="script"><span>Share your cooking.</span></p>
+		</div>	
+	</a>
+	
+	<hr>
+<div class="menu">
+	
+	<ul class="menu_hamburguesa">
+			<input type="checkbox" id="hamburguesa">
+			<label for="hamburguesa">Menú</label>
+			<li><a href="index.html">Inicio</a></li>
+			<li><a href="login.html">Entrar</a></li>
+			<li><a href="registro.html">Regístrate</a></li>
+			<li><a href="#">Salir</a></li>
+			<li><a href="nueva-receta.html">Nueva Receta</a></li>
+			<li>
+				<input id="textoBuscar" class="busqueda" type="text" name="busqueda" placeholder="Buscar"> 
+		<a id="buscar" onclick="busquedaRapida()">Buscar</a>
+			</li>
+	</ul>
+
+
+    <div class="barra_menu">
+    	<a id="inicioMenu" href="index.html">Inicio</a>
+		<a id="loginMenu" href="login.html">Entrar</a>
+		<a id="registroMenu" href="registro.html">Registrate</a>
+		<a id="salirMenu" onclick="salir()">Salir</a>
+		<a id="nuevaRecetaMenu" href="nueva-receta.html">Nueva receta</a>	
+
+		<input class="busqueda" type="text" name="busqueda" placeholder="Buscar"> 
+		<a href="buscar.html">Buscar</a>
+    </div>
+</div>
+
+
+<div id = "card_formulario" class="formulario">
+
+	<h4 style="text-align: center; " id = "mensaje"></h4>
+
+	<h2>Inicia sesión</h2>
+
+	<div id="modal" class="modal">
+		<div class="contenidoModal">
+			<div class="headerModal">
+				<h2 id="headerModal"></h2>
+			</div>
+			<div class="bodyModal">
+				<p id="textoModal"></p>
+			</div>
+			<div class="footerModal">
+				<button id="cerrar" onclick="cerrarModal();">Cerrar</button>
+			</div>
+		</div>
+	</div>
+
+    <label>Nombre de usuario</label>
+    <input id = "login" type="text" name="username" placeholder="Nombre de usuario" required autofocus>
+
+    <label>Contraseña</label>
+    <input id = "contrasenya" type="password" name="password" placeholder="Contraseña" required>
+    
+    <button onclick="login()" type="submit" name="login"> 
+    	<span>Inicia sesión</span> 
+	</button>
+	
+			
+	<button type="submit" name="registrate"> <a href="registro.html">Regístrate </a></button>
+	
+
+	
+</div>
+<script>
+
+	function cargaPagina(){
+		controlAccesoInverso();
+		muestraElementosMenu();
+	}
+
+	function muestraModal(){
+		var modal = document.getElementById("modal");
+		var cerrar = document.getElementById("cerrar");
+
+
+
+		modal.style.display = "block";
+
+		cerrar.onclick = function(){
+			modal.style.display = "none";
+			location.replace("index.html");
+		}
+
+		window.onclick = function(event){
+			if(event.target == modal){
+				modal.style.display = "none";
+				location.replace("index.html");
+			}
+		}
+
+	}
+
+	
+	
+		var datosLogin;
+		var headerModal = document.getElementById("headerModal");
+		var textoModal = document.getElementById("textoModal");
+
+		function peticionGETlogin(login){
+			datosLogin = new XMLHttpRequest();
+			if(datosLogin){
+				datosLogin.onreadystatechange = respuestaGETLogin;
+				datosLogin.open("GET", "rest/login/"+login, true);
+				datosLogin.send();
+			}
+			
+		}
+
+		function respuestaGETLogin(){
+			if(datosLogin.readyState == 4){
+				if(datosLogin.status == 200){
+					if(JSON.parse(datosLogin.responseText).DISPONIBLE){
+						headerModal.innerText = "OH NO!"
+						textoModal.innerText = "El usuario no existe.";
+						muestraModal();
+					}
+				}
+			}
+		}
+
+
+		function peticionPOSTlogin(login, pwd){
+			datosLogin = new XMLHttpRequest();	
+			if(datosLogin){
+				var args = "login="+login+"&pwd="+pwd;
+				datosLogin.onreadystatechange = respuestaPOSTLogin;
+				datosLogin.open("POST", "rest/login/", true);
+				datosLogin.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				datosLogin.send(args);
+			}
+
+		}
+
+		function respuestaPOSTLogin(){
+			if(datosLogin.readyState == 4){
+				if(datosLogin.status == 200){
+					headerModal.innerText = "GENIAL!"
+					textoModal.innerText = "Has hecho login!";
+					muestraModal();
+					sessionStorage.setItem("login", JSON.parse(datosLogin.responseText).login);
+					sessionStorage.setItem("clave", JSON.parse(datosLogin.responseText).clave);
+					
+				}else{
+					headerModal.innerText = "OH NO!"
+					textoModal.innerText = "Las credenciales son inválidas.";
+					muestraModal();
+				}
+			}
+		}
+
+
+		function login(){
+			var login = document.getElementById("login").value;
+			var pwd = document.getElementById("contrasenya").value;
+
+			//COMPRUEBO QUE PILLO LOS PARAMETROS 
+			console.log(login);
+			console.log(pwd);
+			
+			if(login == '' || pwd == ''){
+				//NO SE DEBE USAR ALERT ESTO ES PARA VER QUE FUNKE
+				headerModal.innerText = "OH NO!"
+				textoModal.innerText = "Debes rellenar todos los campos";
+				muestraModal();
+			}else{
+				peticionGETlogin(login);
+				peticionPOSTlogin(login, pwd);
+				
+				//sessionStorage.setItem("login",);
+				//sessionStorage.setItem("pwd", );
+				//document.getElementById("mensaje").innerHTML = text;
+			}
+
+			
+		}
+	</script>
+
+<footer>
+	<hr>
+	<a href="acerca.html">Más información.</a>
+	<a class="subir" href="#top"><i class="icon-angle-circled-up"></i></a>
+	<p>Sara Vilaplana Rúa, 2018</p>
+</footer>
+
+	
+</body>
+
+
+
+</html>

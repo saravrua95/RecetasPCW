@@ -1,0 +1,56 @@
+Options +FollowSymLinks
+RewriteEngine On
+
+# Ruta completa desde htdocs hasta la carpeta "rest".
+# Si el path hasta la carpeta es:
+# - En Windows: C:\xampp\htdocs\practica2\rest
+# - En Linux: /opt/lampp/htdocs/practica2/rest
+# habría que cambiar la siguiente línea por: RewriteBase /practica2/rest/
+RewriteBase /pcw/PRACTICA2/rest/
+
+# Con el valor 307 en las reglas de abajo se redirigen todas las
+# peticiones, tanto las peticiones GET como las POST
+
+##################################################
+### REGLAS PARA LOGIN
+##################################################
+# Regla que redirige a rest/get/login.php (pregunta disponibilidad de login)
+# Con esta línea de abajo, sólo acepta peticiones GET
+RewriteCond %{THE_REQUEST} ^GET
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^login/(.*)$ get/login.php?prm=$1&%{QUERY_STRING} [R=307,L]
+
+# Regla que redirige a rest/post/login.php (hacer login)
+# Con esta línea de abajo, sólo acepta peticiones POST
+RewriteCond %{THE_REQUEST} ^POST
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^login/(.*)$ post/login.php?prm=$1&%{QUERY_STRING} [R=307,L]
+
+##################################################
+### REGLAS PARA REGISTRO DE USUARIO
+##################################################
+# Regla que redirige a rest/post/usuario.php
+# Con esta línea de abajo, sólo acepta peticiones POST
+RewriteCond %{THE_REQUEST} ^POST
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^usuario/(.*)$ post/usuario.php?prm=$1&%{QUERY_STRING} [R=307,L]
+
+##################################################
+### REGLAS PARA RECETA
+##################################################
+# Regla que redirige a rest/get/receta.php (pedir información sobre recetas)
+# Con esta línea de abajo, sólo acepta peticiones GET
+RewriteCond %{THE_REQUEST} ^GET
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^receta/(.*)$ get/receta.php?prm=$1&%{QUERY_STRING} [R=307,L]
+
+# Regla que redirige a rest/post/receta.php (guardar info sobre una nueva receta)
+# Con esta línea de abajo, sólo acepta peticiones POST
+RewriteCond %{THE_REQUEST} ^POST
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^receta/(.*)$ post/receta.php?prm=$1&%{QUERY_STRING} [R=307,L]

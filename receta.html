@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="css/fontello.css">
+	<script src="utilidades.js"></script>
+	<title>Steamed Hams</title>
+</head>
+<body onload="receta()">
+
+
+<a href="index.html">
+		<div class="plate">
+		  <p class="script"></p>
+		  <p class="shadow text1">Steamed Hams</p>
+		  <p class="script"><span>Share your cooking.</span></p>
+		</div>	
+	</a>
+
+	<hr>
+
+<div class="menu">
+
+	<ul class="menu_hamburguesa">
+			<input type="checkbox" id="hamburguesa">
+			<label for="hamburguesa">Menú</label>
+			<li><a href="index.html">Inicio</a></li>
+			<li><a href="login.html">Entrar</a></li>
+			<li><a href="registro.html">Regístrate</a></li>
+			<li><a href="#">Salir</a></li>
+			<li><a href="nueva-receta.html">Nueva Receta</a></li>
+			<li>
+				<input class="busqueda" type="text" name="busqueda" placeholder="Buscar"> 
+				<a href="buscar.html">Buscar</a>
+			</li>
+	</ul>
+
+    <div class="barra_menu">
+    	<a id="inicioMenu" href="index.html">Inicio</a>
+		<a id="loginMenu" href="login.html">Entrar</a>
+		<a id="registroMenu" href="registro.html">Registrate</a>
+		<a id="salirMenu" onclick="salir()">Salir</a>
+		<a id="nuevaRecetaMenu" href="nueva-receta.html">Nueva receta</a>	
+
+		<input id="textoBuscar" class="busqueda" type="text" name="busqueda" placeholder="Buscar"> 
+		<a id="buscar" onclick="busquedaRapida()">Buscar</a>
+    </div>
+</div>
+
+
+<br>
+<div class="card_receta">
+
+	<div id="modal" class="modal">
+			<div class="contenidoModal">
+				<div class="headerModal">
+					<h2 id="headerModal"></h2>
+				</div>
+				<div class="bodyModal">
+					<p id="textoModal"></p>
+				</div>
+				<div class="footerModal">
+					<button id="cerrar" onclick="cerrarModal();">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	
+	<h2 id = "nombreReceta"></h2>
+	
+	<div class="foto_receta">
+		
+		<img id = "fotoReceta" alt="Foto receta">
+		<p id = "descripcionFoto"></p>
+		<button onclick="anteriorFoto()"><i class="icon-left-big"></i></button>
+		<button onclick="siguienteFoto()"><i class="icon-right-big"></i></button>
+
+		<div id="botonesReceta" class="botones_receta">
+			<button id="megusta" onclick="meGusta()"><i class="icon-thumbs-up"></i></button>
+			<button id="nomegusta" onclick="noMeGusta()"><i class="icon-thumbs-down"></i></button>
+			
+		</div>	
+
+		<div id="infoValoraciones">
+			<span id="textoMeGusta"></span>
+			<span id="textoNoMeGusta"></span>
+		</div>
+		<button id="botonComentarios"><i class="icon-comment"></i><a href="#formulario_comentarios"></a> </button>
+
+	</div>
+
+	<div id="info_receta">
+
+		<h3><i class="icon-users"></i>Comensales: </h3><span id="comensales"></span>
+		
+
+		<h3><i class="icon-dot-3"></i>Dificultad: </h3> <span id="dificultad"></span>
+		
+		
+		<h3><i class="icon-clock"></i>Tiempo de preparación: </h3> <span id="tiempo"> Minutos.</span>
+		
+		
+		<h3><i class="icon-list"></i>Ingredientes:</h3>
+		<div class="lista_ingredientes">
+			<ul id="listaIngredientes">
+					
+			</ul>
+		</div>
+		
+		<h3><i class="icon-newspaper"></i>Elaboración:</h3>
+		<span id="elaboracion"></span>
+
+		<h3><i class="icon-calendar"></i>Fecha de alta: </h3>
+		<span id="fechaAlta"></span>
+
+		<h3><i class="icon-user"></i> Cocinero: </h3>
+		<a id="autor" href="buscar.html"></a>
+
+	</div>
+
+<script>
+
+	var datosReceta;
+	var infoReceta;
+	var datosIngredientes;
+	var datosComentarios;
+	var datosVoto;
+	var queryString = window.location.search;
+	var idReceta = queryString.split("=");
+
+	function receta(){
+		peticionGETReceta();
+		peticionGETIngredientes();
+		peticionGETComentarios();
+		muestraBotonesValoraciones();
+		muestraElementosMenu();
+	}
+
+
+	function muestraBotonesValoraciones(){
+		console.log(sessionStorage.getItem("login"));
+		if(sessionStorage.getItem("login") == null || 
+			sessionStorage.getItem("clave") == null){
+				document.getElementById("botonesReceta").style.display = "none";
+				document.getElementById("comentarioNuevo").style.display = "none";
+				
+		}else{
+			document.getElementById("infoValoraciones").style.display = "none";
+		}
+	}
+
+	function peticionGETIngredientes(){
+		datosIngredientes = new XMLHttpRequest();
+		if(datosIngredientes){
+			datosIngredientes.onreadystatechange = respuestaGETIngredientes;
+			datosIngredientes.open("GET", "rest/receta/"+idReceta[1]+"/ingredientes", true);
+			datosIngredientes.send();
+		}
+	}
+
+	function respuestaGETIngredientes(){
+		if(datosIngredientes.readyState == 4){
+			if(datosIngredientes.status == 200){
+				escribeIngredientes();
+			}
+		}
+	}
+
+	function escribeIngredientes(){
+		let listaIngredientes = document.getElementById("listaIngredientes");
+		let ingredientes = JSON.parse(datosIngredientes.responseText).FILAS;
+		for(let i = 0; i < ingredientes.length; i++){
+			var ingrediente = document.createElement("LI");
+			ingrediente.innerText = ingredientes[i].nombre;
+			listaIngredientes.appendChild(ingrediente);
+		}
+	}
+
+	function peticionGETComentarios(){
+		datosComentarios = new XMLHttpRequest();
+		if(datosComentarios){
+			datosComentarios.onreadystatechange = respuestaGETComentarios;
+			datosComentarios.open("GET", "rest/receta/"+idReceta[1]+"/comentarios", true);
+			datosComentarios.send();
+		}
+	}
+
+	function respuestaGETComentarios(){
+		if(datosComentarios.readyState == 4){
+			if(datosComentarios.status == 200){
+				escribeComentarios();
+			}
+		}
+	}
+
+
+	function escribeComentarios(){
+		let comentarios = document.getElementById("comentarios");
+		let arrayComentarios = JSON.parse(datosComentarios.responseText).FILAS;
+
+		for(let i = 0; i < arrayComentarios.length; i++){
+			let comentario = document.createElement("DIV");
+			comentario.classList.toggle("comentario");
+
+				let tituloComentario = document.createElement("H4");
+				tituloComentario.innerText = arrayComentarios[i].titulo;
+
+				let textoComentario = document.createElement("P");
+				textoComentario.innerText = arrayComentarios[i].texto;
+
+				let contenedorDatos = document.createElement("DIV");
+				contenedorDatos.classList.toggle("info_coment");
+
+					let usuario = document.createElement("P");
+					let textoUsuario = document.createElement("SPAN");
+					textoUsuario.innerText = arrayComentarios[i].autor;
+						let iconoUsuario = document.createElement("I");
+						iconoUsuario.classList.toggle("icon-user");
+					usuario.appendChild(iconoUsuario);
+					usuario.appendChild(textoUsuario);
+
+					let fecha = document.createElement("P");
+					let textoFecha = document.createElement("SPAN");
+					textoFecha.innerText = arrayComentarios[i].fecha;
+						let iconoFecha = document.createElement("I");
+						iconoFecha.classList.toggle("icon-calendar");
+					fecha.appendChild(iconoFecha);
+					fecha.appendChild(textoFecha);
+
+				contenedorDatos.appendChild(usuario);
+				contenedorDatos.appendChild(fecha);
+			
+			comentario.appendChild(tituloComentario);
+			comentario.appendChild(textoComentario);
+			comentario.appendChild(contenedorDatos);
+
+		comentarios.appendChild(comentario);		
+		}
+	}
+
+
+	function peticionGETReceta(){
+		datosReceta = new XMLHttpRequest();
+		if(datosReceta){
+			datosReceta.onreadystatechange = respuestaGETReceta;
+			datosReceta.open("GET", "rest/receta/"+idReceta[1], true);
+			datosReceta.send();
+		}
+	}
+
+	function respuestaGETReceta(){
+		if(datosReceta.readyState == 4){
+			if(datosReceta.status == 200){
+				escribeDatos();
+				peticionGETFotos();
+			}
+		}
+	}
+
+	function escribeDatos(){
+		infoReceta = JSON.parse(datosReceta.responseText).FILAS;
+		document.getElementById("nombreReceta").innerHTML = infoReceta[0].nombre;
+		document.getElementById("comensales").innerHTML = infoReceta[0].comensales;
+		document.getElementById("tiempo").innerHTML = infoReceta[0].tiempo + " minutos.";
+		document.getElementById("elaboracion").innerHTML = infoReceta[0].elaboracion;
+		document.getElementById("fechaAlta").innerHTML = infoReceta[0].fecha;
+		document.getElementById("autor").innerHTML = infoReceta[0].autor;
+		document.getElementById("descripcionFoto").innerHTML = infoReceta[0].descripcion_foto;
+		document.getElementById("fotoReceta").setAttribute("src", "fotos/"+infoReceta[0].fichero);
+		
+		document.getElementById("megusta").innerHTML = "Me gusta: "+infoReceta[0].positivos;
+		document.getElementById("nomegusta").innerHTML = "No me gusta: "+infoReceta[0].negativos;
+		document.getElementById("botonComentarios").innerHTML = "Comentarios: "+infoReceta[0].comentarios;
+
+		document.getElementById("textoMeGusta").innerText = "Me gusta: "+infoReceta[0].positivos;
+		document.getElementById("textoNoMeGusta").innerText = "No me gusta: "+infoReceta[0].negativos;
+		
+		getDificultad(infoReceta);
+		
+
+	}
+
+	function getDificultad(infoReceta){
+		var dificultad = infoReceta[0].dificultad;
+
+		if(dificultad == 0){
+			document.getElementById("dificultad").innerHTML = "Baja";
+		}
+		if(dificultad == 1){
+			document.getElementById("dificultad").innerHTML = "Media";
+		}
+		if(dificultad == 2){
+			document.getElementById("dificultad").innerHTML = "Alta";
+		}
+	}
+
+
+	var fotosReceta;
+	var ficherosReceta;
+
+	function peticionGETFotos(){
+		let urlPeticion = "rest/receta/"+idReceta[1]+"/fotos";
+		fotosReceta = new XMLHttpRequest();
+		if(fotosReceta){
+			fotosReceta.onreadystatechange = respuestaGETFotos;
+			fotosReceta.open("GET", urlPeticion, true);
+			fotosReceta.send();
+		}
+	}
+
+	function respuestaGETFotos(){
+		if(fotosReceta.readyState == 4){
+			if(fotosReceta.status == 200){
+				ficherosReceta = JSON.parse(fotosReceta.responseText).FILAS;
+			}
+		}
+	}
+
+	function siguienteFoto(){
+		let indiceFoto;
+		let fotoActual = document.getElementById("fotoReceta").getAttribute("src").split("/");
+		
+		indiceFoto = ficherosReceta.findIndex(i => i.fichero == fotoActual[1]);
+		if(indiceFoto+1 < ficherosReceta.length){
+			document.getElementById("fotoReceta").setAttribute("src", "fotos/"+ficherosReceta[indiceFoto+1].fichero);
+		}
+		console.log(indiceFoto);
+	}
+
+	function anteriorFoto(){
+		let indiceFoto;
+		let fotoActual = document.getElementById("fotoReceta").getAttribute("src").split("/");
+
+		indiceFoto = ficherosReceta.findIndex(i => i.fichero == fotoActual[1]);
+		if(indiceFoto-1 >= 0){
+			document.getElementById("fotoReceta").setAttribute("src", "fotos/"+ficherosReceta[indiceFoto-1].fichero);
+		}
+	}
+
+
+	var valorVoto;
+
+	function meGusta(){
+		valorVoto = 1;
+		peticionPOSTVoto(valorVoto);
+	}
+
+	function noMeGusta(){
+		valorVoto = 0;
+		peticionPOSTVoto(valorVoto);
+	}
+
+	function muestraModal(){
+		var modal = document.getElementById("modal");
+		var cerrar = document.getElementById("cerrar");
+
+
+
+		modal.style.display = "block";
+
+		cerrar.onclick = function(){
+			modal.style.display = "none";
+			location.reload();
+		}
+
+		window.onclick = function(event){
+			if(event.target == modal){
+				modal.style.display = "none";
+				location.reload();
+			}
+		}
+
+	}
+
+
+	var headerModal = document.getElementById("headerModal");
+	var textoModal = document.getElementById("textoModal");
+
+	function peticionPOSTVoto(valorVoto){
+		var data = "l="+sessionStorage.getItem("login");
+
+		var xhr = new XMLHttpRequest();
+		xhr.withCredentials = true;
+
+		xhr.addEventListener("readystatechange", function () {
+		if (this.readyState === 4) {
+				if(this.status ===200){
+				headerModal.innerText = "GENIAL!";
+				textoModal.innerText = "Se ha registrado tu voto."
+				muestraModal();
+			}
+		}
+		});
+
+		xhr.open("POST", "http://localhost/pcw/PRACTICA2/rest/receta/"+idReceta[1]+"/voto/"+valorVoto);
+		xhr.setRequestHeader("Authorization", sessionStorage.getItem("clave"));
+		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+		xhr.send(data);
+	}
+
+
+
+	function comenta(){
+		let titulo = document.getElementById("tituloComentario").value;
+		let texto = document.getElementById("textoComentario").value;
+
+		if(titulo != "" && texto != ""){
+			peticionPOSTComentario(titulo, texto);
+		}
+	}
+
+	function peticionPOSTComentario(titulo, texto){
+		var data = "l="+sessionStorage.getItem("login")+"&titulo="+titulo+"&texto="+texto;
+
+		var xhr = new XMLHttpRequest();
+		xhr.withCredentials = true;
+
+		xhr.addEventListener("readystatechange", function () {
+		if (this.readyState === 4) {
+				if(this.status ===200){
+				headerModal.innerText = "GENIAL!";
+				textoModal.innerText = "Se ha registrado tu comentario."
+				muestraModal();
+			}
+		}
+		});
+
+		xhr.open("POST", "http://localhost/pcw/PRACTICA2/rest/receta/"+idReceta[1]+"/comentario");
+		xhr.setRequestHeader("Authorization", sessionStorage.getItem("clave"));
+		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+		xhr.send(data);
+	}
+
+
+
+</script>
+
+
+</div>
+
+
+<div class="formulario" id="formularioComentarios">
+	<h2>Comentarios</h2>
+
+	<div id="comentarioNuevo" class="comentario_nuevo">
+		<h3>Nuevo comentario</h3>
+		<label>Nombre del comentario</label>
+		<br>
+		<textarea id="tituloComentario" name="nombre_comentario" id="nombre_comentario" placeholder="Nombre del comentario" maxlength="50"></textarea>
+		<br>
+		<label>Contenido del comentario</label>
+		<br>
+		<textarea id="textoComentario" maxlength="250" placeholder="Contenido del comentario"></textarea>
+		<br>
+		<button onclick="comenta()">Enviar comentario</button>
+	
+	</div>	
+	<div id="comentarios" class="comentarios">
+
+
+
+	</div>
+
+<footer>
+		<hr>
+		<a href="acerca.html">Más información.</a>
+		<a class="subir" href="#top"><i class="icon-angle-circled-up"></i></a>
+		<p>Sara Vilaplana Rúa, 2018</p>
+	</footer>
+
+</body>
+
+
+
+</html>

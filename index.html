@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="css/fontello.css">
+	<script src="utilidades.js"></script>
+	<title>Steamed Hams</title>
+</head>
+<body onload="recetas()">
+
+<a href="index.html">
+		<div class="plate">
+		  <p class="script"></p>
+		  <p class="shadow text1">Steamed Hams</p>
+		  <p class="script"><span>Share your cooking.</span></p>
+		</div>	
+</a>
+
+<hr>
+
+<div class="menu" onload="muestraElementosMenu();">
+		
+	<ul class="menu_hamburguesa">
+
+		<input type="checkbox" id="hamburguesa">
+		<label for="hamburguesa">Menú</label>	
+		<li><a href="index.html">Inicio</a></li>
+		<li><a href="acerca.html">Acerca de</a></li>
+		<li><a href="login.html">Entrar</a></li>
+		<li><a href="registro.html">Regístrate</a></li>
+		<li><a>Salir</a></li>
+		<li><a href="nueva-receta.html">Nueva Receta</a></li>
+		<li>
+			<input class="busqueda" type="text" name="busqueda" placeholder="Buscar"> 
+			<a href="buscar.html">Buscar</a>
+		</li>
+	</ul>
+
+
+
+    <div class="barra_menu">
+    	<a id="inicioMenu" href="index.html">Inicio</a>
+		<a id="loginMenu" href="login.html">Entrar</a>
+		<a id="registroMenu" href="registro.html">Registrate</a>
+		<a id="salirMenu" onclick="salir()">Salir</a>
+		<a id="nuevaRecetaMenu" href="nueva-receta.html">Nueva receta</a>	
+
+		<input id="textoBuscar" class="busqueda" type="text" name="busqueda" placeholder="Buscar"> 
+		<a id="buscar" onclick="busquedaRapida()">Buscar</a>
+    </div>
+</div>
+
+
+
+<h2> Últimas recetas</h2>
+
+
+<div id="ultimasRecetas" class="ultimas_recetas">
+	<!--
+	<div class="card">
+  		<a href="receta.html"><img src="https://media.npr.org/assets/img/2016/03/29/pekingravioli_custom-d5dae73c1d67504584c6af63e83d0c428ba8d74b-s900-c85.jpg" alt="Foto Receta" style="width:100%"></a>
+  		<div class="container">
+    		<a  href="receta.html"><h3><b id="nombre"></b></h3></a> 
+   		 	<p><i class="icon-user"></i>Autor: <a id="autor" href="buscar.html">C. Arguiñano</a></p>
+		    <p><i class="icon-thumbs-up"></i>Me gusta: 85</p>
+		    <p><i class="icon-thumbs-down"></i>No me gusta: 3</p>
+		    <p><i class="icon-comment"></i>Comentarios: 8</p>
+		    <p><i class="icon-calendar"></i>Publicada el dia 18/5</p>
+  		</div>
+	</div>
+	-->
+
+	<script>
+		var datosIndex;
+
+
+		function peticionGETIndexFotos(){
+			//rest/receta/id_receta/fotos
+		}
+
+		function peticionGETIndex(){
+			//rest/receta/?u=6
+			datosIndex = new XMLHttpRequest();
+			if(datosIndex){
+				datosIndex.onreadystatechange = respuestaGETIndex;
+				datosIndex.open("GET", "rest/receta/?u="+6, true);
+				datosIndex.send();
+			}
+		}
+
+		function respuestaGETIndex(){
+			if(datosIndex.readyState == 4){
+				if(datosIndex.status == 200){
+					imprimeRecetas();
+				}
+			}
+		}
+		
+		function imprimeRecetas(){
+			var infoRecetasIndex = JSON.parse(datosIndex.responseText).FILAS;
+			infoRecetasIndex.forEach(receta => {
+				creaCard(receta);
+			});
+		}
+		
+		function creaCard(receta){
+			var card = document.createElement("DIV");
+			card.classList.toggle("card");
+
+				var imagen = document.createElement("A");
+				var foto = document.createElement("IMG");
+				foto.setAttribute("src", "fotos/"+receta.fichero);
+				imagen.appendChild(foto);
+
+				var datos = document.createElement("DIV");
+				datos.classList.toggle("container");
+
+					var nombre = document.createElement("A");
+					nombre.setAttribute("href", "receta.html?id="+receta.id);
+					var h3Nombre  = document.createElement("H3");
+					h3Nombre.innerText = receta.nombre;
+					nombre.appendChild(h3Nombre);
+
+					var autor = document.createElement("P");
+					var enlaceAutor = document.createElement("A");
+					enlaceAutor.innerText = receta.autor;
+					enlaceAutor.setAttribute("href", "buscar.html?u="+receta.autor);
+					var iconoAutor = document.createElement("I");
+					iconoAutor.classList.toggle("icon-user");
+					autor.appendChild(iconoAutor);
+					autor.appendChild(enlaceAutor);
+					
+					var comentarios = document.createElement("P");
+					var textoComentarios = document.createElement("SPAN");
+					textoComentarios.innerText = "Comentarios: "+receta.comentarios;
+					var iconoComentarios = document.createElement("I");
+					iconoComentarios.classList.toggle("icon-comment");
+					comentarios.appendChild(iconoComentarios);
+					comentarios.appendChild(textoComentarios);
+					
+
+					var megusta = document.createElement("P");
+					var textoMegusta = document.createElement("SPAN");
+					textoMegusta.innerText = "Me Gusta: "+receta.positivos;
+					var iconoMegusta = document.createElement("I");
+					iconoMegusta.classList.toggle("icon-thumbs-up");
+					megusta.appendChild(iconoMegusta);
+					megusta.appendChild(textoMegusta);
+
+					var nomegusta = document.createElement("P");
+					var textoNomegusta = document.createElement("SPAN");
+					textoNomegusta.innerText = "No me gusta: "+receta.negativos;
+					var iconoNomegusta = document.createElement("I");
+					iconoNomegusta.classList.toggle("icon-thumbs-down");
+					nomegusta.appendChild(iconoNomegusta);
+					nomegusta.appendChild(textoNomegusta);
+
+					var fecha = document.createElement("P");
+					var textoFecha = document.createElement("SPAN");
+					textoFecha.innerText = "Fecha de alta: "+receta.fecha;
+					var iconoFecha = document.createElement("I");
+					iconoFecha.classList.toggle("icon-calendar");
+					fecha.appendChild(iconoFecha);
+					fecha.appendChild(textoFecha);
+
+				datos.appendChild(nombre);
+				datos.appendChild(autor);
+				datos.appendChild(comentarios);
+				datos.appendChild(megusta);
+				datos.appendChild(nomegusta);
+				datos.appendChild(fecha);
+
+			card.appendChild(imagen);
+			card.appendChild(datos);
+
+			document.getElementById("ultimasRecetas").appendChild(card);
+
+		}
+
+		function recetas(){
+			peticionGETIndex();
+			muestraElementosMenu();
+		}
+
+		
+	</script>
+
+
+</div>
+
+
+<footer>
+	<hr>
+	<a href="acerca.html">Más información.</a>
+	<a class="subir" href="#top"><i class="icon-angle-circled-up"></i></a>
+	<p> Sara Vilaplana Rúa, 2018</p>
+</footer>
+
+
+</body>
+
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="css/fontello.css">
+	<script src="utilidades.js"></script>
+	<title>Steamed Hams</title>
+</head>
+<body onload="muestraElementosMenu();">
+	<a href="index.html">
+		<div class="plate">
+		  <p class="script"></p>
+		  <p class="shadow text1">Steamed Hams</p>
+		  
+		  <p class="script"><span>Share your cooking.</span></p>
+		</div>	
+	</a>
+
+	<hr>
+
+<div class="menu">
+
+	<ul class="menu_hamburguesa">
+			<input type="checkbox" id="hamburguesa">
+			<label for="hamburguesa">Menú</label>
+			<li><a href="index.html">Inicio</a></li>
+			<li><a href="login.html">Entrar</a></li>
+			<li><a href="registro.html">Regístrate</a></li>
+			<li><a href="#">Salir</a></li>
+			<li><a href="nueva-receta.html">Nueva Receta</a></li>
+			<li>
+				<input class="busqueda" type="text" name="busqueda" placeholder="Buscar"> 
+				<a href="buscar.html">Buscar</a>
+			</li>
+	</ul>
+
+	
+    <div class="barra_menu">
+    	<a id="inicioMenu" href="index.html">Inicio</a>
+		<a id="loginMenu" href="login.html">Entrar</a>
+		<a id="registroMenu" href="registro.html">Registrate</a>
+		<a id="salirMenu" onclick="salir()">Salir</a>
+		<a id="nuevaRecetaMenu" href="nueva-receta.html">Nueva receta</a>	
+
+		<input id="textoBuscar" class="busqueda" type="text" name="busqueda" placeholder="Buscar"> 
+		<a id="buscar" onclick="busquedaRapida()">Buscar</a>
+    </div>
+</div>
+
+
+	<div class="acerca_de">
+		<h2>Descripción.</h2>
+
+		<p>Steamed Hams es la primera práctica de la asignatura PCW de tercer curso de Ingeniería Multimedia.
+			<br>
+			Se encuentran algunos errores de validación por la implementación sin JavaScript del menú de hamburguesa.
+			<br>
+			Para el modelo de inicio de tipo tarjetas he usado el ejemplo de la W3Schools.
+			(<a href="https://www.w3schools.com/howto/howto_css_cards.asp">Tarjetas</a>)
+			<br>
+			Para el modelo de formulario he usado un ejemplo de freefrontend.com 
+			(<a href="https://codepen.io/mican/pen/awGxmL?editors=1100#0">Modelo de formulario</a>)
+			<br>
+			Para la galeria de recetas como resultado de la busqueda me he inspirado en un ejemplo de W3Schools
+			(<a href="https://www.w3schools.com/howto/howto_js_lightbox.asp">Resultados de busqueda</a>)
+
+		</p>
+		
+
+		<h2>Datos personales.</h2>
+		<p>
+			Nombre: Sara Vilaplana Rúa <br>
+			DNI: 21692955E  <br>
+			Grupo: Miercoles 17:00/19:00 <br>
+			email: <a href="mailto:saravrua95@gmail.com">saravrua95@gmail.com</a> 
+		</p>
+
+		<hr>
+	</div>
+
+
+	<footer>
+			<hr>
+			<a href="acerca.html">Más información.</a>
+			<a class="subir" href="#top"><i class="icon-angle-circled-up"></i></a>
+			<p>Sara Vilaplana Rúa, 2018</p>
+	</footer>
+
+</body>
+
+
+
+
+
+</html>
