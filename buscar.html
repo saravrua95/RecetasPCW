@@ -5,10 +5,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="css/fontello.css">
-    <script src="utilidades.js"></script>
 	<title>Steamed Hams</title>
 </head>
-<body onload="resultadosBusqueda()">
+<body>
 <a href="index.html">
 		<div class="plate">
 		  <p class="script"></p>
@@ -25,6 +24,7 @@
             <input type="checkbox" id="hamburguesa">
             <label for="hamburguesa">Menú</label>
             <li><a href="index.html">Inicio</a></li>
+            <li><a href="acerca.html">Acerca de</a></li>
             <li><a href="login.html">Entrar</a></li>
             <li><a href="registro.html">Regístrate</a></li>
             <li><a href="#">Salir</a></li>
@@ -36,420 +36,115 @@
     </ul>
 
     <div class="barra_menu">
-    	<a id="inicioMenu" href="index.html">Inicio</a>
-		<a id="loginMenu" href="login.html">Entrar</a>
-		<a id="registroMenu" href="registro.html">Registrate</a>
-		<a id="salirMenu" onclick="salir()">Salir</a>
-		<a id="nuevaRecetaMenu" href="nueva-receta.html">Nueva receta</a>	
+        <a href="index.html">Inicio</a>
+        <a href="acerca.html">Acerca de</a>
+        <a href="login.html">Entrar</a>
+        <a href="registro.html">Registrate</a>
+        <a class="no_habilitado" href="#">Salir</a>
+        <a class="no_habilitado" href="nueva-receta.html">Nueva receta</a>
+        
 
-		<input id="textoBuscar" class="busqueda" type="text" name="busqueda" placeholder="Buscar"> 
-		<a id="buscar" onclick="busquedaRapida()">Buscar</a>
+        <input class="busqueda" type="text" name="busqueda" placeholder="Buscar"> 
+        <a href="buscar.html">Buscar</a>
     </div>
 </div>
 
 
-<h2 id="tituloPagina">Búsqueda</h2>
+<h2>Búsqueda</h2>
 
-<div id="mensaje"></div>
 
-<div id="modal" class="modal">
-    <div class="contenidoModal">
-        <div class="headerModal">
-            <h2 id="headerModal"></h2>
-        </div>
-        <div class="bodyModal">
-            <p id="textoModal"></p>
-        </div>
-        <div class="footerModal">
-                <button id="busquedaAvanzada">Ir a búsqueda avanzada</button>
-            <button id="cerrar">Cerrar</button>
-            
-        </div>
-    </div>
+<div class="formulario formulario_busqueda">
+    	<h2>Criterio de búsqueda.</h2>
+
+        <input type="radio" name="busqueda" value="nombre" required><i class="icon-newspaper"></i> Nombre
+	    <input type="text" name="nombre_receta" placeholder="Nombre de la receta">
+
+        <input type="radio" name="busqueda" value="ingredientes" required> <i class="icon-list-add"></i>Ingredientes
+        <input type="text" name="ingredientes" placeholder="Ingredientes">
+
+	    <input type="radio" name="busqueda" value="comensales" required><i class="icon-users"></i> Número de comensales
+	    <input type="number" name="comensales" placeholder="Numero de comensales">
+
+	    <input type="radio" name="busqueda" value="tiempo" required> <i class="icon-clock"></i>Tiempo de elaboración
+	    <input type="number" name="t_elaboracion" placeholder="Tiempo de elaboración (min)">
+
+	    <input type="radio" name="busqueda" value="dificultad" required> Dificultad
+        <br>
+    	    <input type="radio" name="dificultad" value="alta" required> <i class="icon-dot"></i>Alta 
+    	    <br>
+    	    <input type="radio" name="dificultad" value="media" required> <i class="icon-dot-2"></i>Media 
+    	    <br>
+    	    <input type="radio" name="dificultad" value="baja" required> <i class="icon-dot-3"></i>Baja 
+	    <br>
+        <br>
+
+        <input type="radio" name="busqueda" value="autor" required> <i class="icon-user"></i>Autor
+        <input type="text" name="autor" placeholder="Nombre del autor">
+
+        <br>
+        <button>Buscar</button>
+
 </div>
 
 
-<div id="formularioBusqueda" class="formulario formulario_busqueda">
-        <h2>Criterio de búsqueda.</h2>
+<div class="ordenacion">
+	<label>Ordenar por:</label>
+	<select>
+	  <option value="dificultad" selected>Dificultad</option>
+	  <option value="fecha">Fecha</option>
+	</select>
+</div>
 
-        <input id = "radioNombre" type="radio" name="busqueda" value="nombre" required><i class="icon-newspaper"></i> Nombre
-	    <input id = "textNombre" type="text" name="nombre_receta" placeholder="Nombre de la receta">
 
-        <input id = "radioIngredientes" type="radio" name="busqueda" value="ingredientes" required> <i class="icon-list-add"></i>Ingredientes
-        <input id = "textIngredientes" type="text" name="ingredientes" placeholder="Ingredientes">
-
-	    <input id = "radioComensales" type="radio" name="busqueda" value="comensales" required><i class="icon-users"></i> Número de comensales
-	    <input id = "textComensales" type="number" name="comensales" placeholder="Numero de comensales">
-
-	    <input id = "radioTiempo" type="radio" name="busqueda" value="tiempo" required> <i class="icon-clock"></i>Tiempo de elaboración
-	    <input id = "textTiempo" type="number" name="t_elaboracion" placeholder="Tiempo de elaboración (min)">
-
-	    <input  id = "radioDificultad" type="radio" name="busqueda" value="dificultad" required> Dificultad
-        <div>
-    	    <input id = "textDificultad" type="radio" name="dificultad" value="2" required> <i class="icon-dot"></i>Alta 
-    	    <br>
-    	    <input id = "textDificultad" type="radio" name="dificultad" value="1" required> <i class="icon-dot-2"></i>Media 
-    	    <br>
-    	    <input id = "textDificultad" type="radio" name="dificultad" value="0" required> <i class="icon-dot-3"></i>Baja 
-	    </div>
-        <br>
-
-        <input id = "radioAutor" type="radio" name="busqueda" value="autor" required> <i class="icon-user"></i>Autor
-        <input id = "textAutor" type="text" name="autor" placeholder="Nombre del autor">
-
-        <br>
-        <button onclick="buscar()" id = "buscar">Buscar</button>
-        <button onclick="limpiar()" id = "limpiar">Limpiar</button>
-    </div>
-
-<script>
-
-    var datosBusqueda;
-    var formularioBusqueda = document.getElementById("formularioBusqueda");
-    var queryString = window.location.search;
-    var criterioBusqueda = queryString.split("=");
-
-    function resultadosBusqueda(){
-        var tituloPagina = document.getElementById("tituloPagina");
-        muestraElementosMenu();
-        console.log("valor: "+queryString);
-        if(criterioBusqueda[1] != ""){
-            tituloPagina.innerText = "Resultados de la búsqueda.";
-            peticionGETBusquedaGeneral();
-            formularioBusqueda.style.display = "none";
-        }else{
-            tituloPagina.innerText = "Formulario de Busqueda.";
-            buscar();
-        }
-    }
-
-    function limpiar(){
-        location.replace("buscar.html");
-    }
-    
-    function peticionGETBusquedaGeneral(){
-        datosBusqueda = new XMLHttpRequest();
-        if(datosBusqueda){
-            datosBusqueda.onreadystatechange = respuestaGETBusquedaGeneral;
-            datosBusqueda.open("GET", "rest/receta/?t="+criterioBusqueda[1], true);
-            datosBusqueda.send();
-        }
-    }
-
-    function respuestaGETBusquedaGeneral(){
-        if(datosBusqueda.readyState == 4){
-			if(datosBusqueda.status == 200){
-                var recetas = JSON.parse(datosBusqueda.responseText).FILAS;
-                muestraResultados(recetas);
-			}
-        }
-    }
-
-    /* <li>
+<ul id="rig">
+    <li>
         <a class="rig-cell" href="receta.html">
             <img class="rig-img" alt="Foto Receta" src="https://media.npr.org/assets/img/2016/03/29/pekingravioli_custom-d5dae73c1d67504584c6af63e83d0c428ba8d74b-s900-c85.jpg">
             <span class="rig-overlay"></span>
             <span class="rig-text">Receta 1</span>
         </a>
-    </li>*/
-
-    function muestraResultados(recetas){
-        document.getElementById("rig").innerHTML = '';
-        if(recetas.length != 0){
-            for(let i = 0; i < recetas.length; i++){
-                var cuadricula = document.getElementById("rig");
-                    var elemento = document.createElement("LI");
-
-                        var enlace = document.createElement("A");
-                        enlace.classList.toggle("rig-cell");
-                        enlace.setAttribute("href", "receta.html?id="+recetas[i].id);
-                            var imagen = document.createElement("IMG");
-                            imagen.classList.toggle("rig-img");
-                            imagen.setAttribute("src", "fotos/"+recetas[i].fichero);
-                            var filtro = document.createElement("SPAN");
-                            filtro.classList.toggle("rig-overlay");
-                            var nombre = document.createElement("SPAN");
-                            nombre.classList.toggle("rig-text");
-                            nombre.innerText = recetas[i].nombre;
-                        enlace.appendChild(imagen);
-                        enlace.appendChild(filtro);
-                        enlace.appendChild(nombre);
-                    elemento.appendChild(enlace);
-                cuadricula.appendChild(elemento);
-            }
-        }else{
-            headerModal.innerText = "OH NO!";
-            textoModal.innerText = "No hemos encontrado nada.";
-            muestraModal();
-
-        }
-    }
-
-
-    function muestraModal(){
-		var modal = document.getElementById("modal");
-        var cerrar = document.getElementById("cerrar");
-        var busquedaAvanzada = document.getElementById("busquedaAvanzada");
-
-
-
-		modal.style.display = "block";
-
-		cerrar.onclick = function(){
-            modal.style.display = "none";
-            muestraUltimasRecetas();
-		}
-
-        busquedaAvanzada.onclick = function(){
-            modal.style.display = "none";
-            formularioBusqueda.style.display = "block";            
-        }
-		
-
-		window.onclick = function(event){
-			if(event.target == modal){
-				modal.style.display = "none";
-			}
-		}
-
-    }
-    
-
-    function muestraUltimasRecetas(){
-        peticionGETUltimasRecetas();
-
-    }
-
-    var ultimasRecetas;
-
-    function peticionGETUltimasRecetas(){
-			//rest/receta/?u=6
-			ultimasRecetas = new XMLHttpRequest();
-			if(ultimasRecetas){
-				ultimasRecetas.onreadystatechange = respuestaGETUltimasRecetas;
-				ultimasRecetas.open("GET", "rest/receta/?u="+6, true);
-				ultimasRecetas.send();
-			}
-		}
-
-		function respuestaGETUltimasRecetas(){
-			if(ultimasRecetas.readyState == 4){
-				if(ultimasRecetas.status == 200){
-                    var arrayUltimasRecetas = JSON.parse(ultimasRecetas.responseText).FILAS;
-                    console.log(arrayUltimasRecetas);
-                    muestraResultados(arrayUltimasRecetas);
-				}
-			}
-		}
-
-
-    function peticionGETBusquedaElaboracion(){
-        //rest/receta/?e = {texto1, texto2,...}
-        datosBusqueda = new XMLHttpRequest();
-        if(datosBusqueda){
-            datosBusqueda.onreadystatechange = respuestaGETBusquedaElaboracion;
-            datosBusqueda.open("GET", "rest/receta/?e=");
-            datosBusqueda.send();
-        }
-
-    }
-    function respuestaGETBusquedaElaboracion(){
-        if(datosBusqueda.readyState == 4){
-            if(datosBusqueda.status == 200){
-				var recetasElaboracion = JSON.parse(datosBusqueda.responseText).FILAS;
-                muestraResultados(recetasElaboracion);
-			}
-        }
-    }
-    function peticionGETBusquedaNombre(textNombre){
-         //rest/receta/?n = {texto1, texto2,...}
-        datosBusqueda = new XMLHttpRequest();
-        if(datosBusqueda){
-            datosBusqueda.onreadystatechange = respuestaGETBusquedaNombre;
-            datosBusqueda.open("GET", "rest/receta/?n="+textNombre, true);
-            datosBusqueda.send();
-        }
-    }
-    function respuestaGETBusquedaNombre(){
-        if(datosBusqueda.readyState == 4){
-			if(datosBusqueda.status == 200){
-				var recetasNombre = JSON.parse(datosBusqueda.responseText).FILAS;
-                muestraResultados(recetasNombre);
-			}
-        }
-    }
-    function peticionGETBusquedaIngredientes(textIngredientes){
-         //rest/receta/?i = {ingrediente1, ingrediente2,...}
-        datosBusqueda = new XMLHttpRequest();
-        if(datosBusqueda){
-            datosBusqueda.onreadystatechange = respuestaGETBusquedaIngredientes;
-            datosBusqueda.open("GET", "rest/receta/?i="+textIngredientes, true);
-            datosBusqueda.send();
-        }
-    }
-    function respuestaGETBusquedaIngredientes(){
-        if(datosBusqueda.readyState == 4){
-			if(datosBusqueda.status == 200){
-                var recetasIngredientes = JSON.parse(datosBusqueda.responseText).FILAS;
-                muestraResultados(recetasIngredientes);
-			}
-        }
-    }
-    function peticionGETBusquedaAutor(textAutor){
-         //rest/receta/?a = {login}
-        datosBusqueda = new XMLHttpRequest();
-        if(datosBusqueda){
-            datosBusqueda.onreadystatechange = respuestaGETBusquedaAutor;
-            datosBusqueda.open("GET", "rest/receta/?a="+textAutor, true);
-            datosBusqueda.send();
-        }
-    }
-    function respuestaGETBusquedaAutor(){
-        if(datosBusqueda.readyState == 4){
-			if(datosBusqueda.status == 200){
-                var recetasAutor = JSON.parse(datosBusqueda.responseText).FILAS;
-                muestraResultados(recetasAutor);
-			}
-        }
-    }
-    function peticionGETBusquedaDificultad(textDificultad){
-         //rest/receta/?d = {numero (0 = baja, 1 = media, 2 = alta)}
-        datosBusqueda = new XMLHttpRequest();
-        if(datosBusqueda){
-            datosBusqueda.onreadystatechange = respuestaGETBusquedaDificultad;
-            //TEXT DIFICULTAD HA DE SER UN NUMERO 
-            datosBusqueda.open("GET", "rest/receta/?d="+textDificultad, true);
-            datosBusqueda.send();
-        }
-    }
-    function respuestaGETBusquedaDificultad(){
-        if(datosBusqueda.readyState == 4){
-			if(datosBusqueda.status == 200){
-                var recetasDificultad = JSON.parse(datosBusqueda.responseText).FILAS;
-                muestraResultados(recetasDificultad);
-			}
-        }
-    }
-    function peticionGETBusquedaComensales(textComensales){
-         //rest/receta/?c = {numero}
-        datosBusqueda = new XMLHttpRequest();
-        if(datosBusqueda){
-            datosBusqueda.onreadystatechange = respuestaGETBusquedaComensales;
-            datosBusqueda.open("GET", "rest/receta/?c="+textComensales, true);
-            datosBusqueda.send();
-        }
-    }
-    function respuestaGETBusquedaComensales(){
-        if(datosBusqueda.readyState == 4){
-			if(datosBusqueda.status == 200){
-                var recetasComensales = JSON.parse(datosBusqueda.responseText).FILAS;
-                muestraResultados(recetasComensales);
-			}
-        }
-    }
-    function peticionGETBusquedaDuracion(textTiempo){
-         //rest/receta/?di(igual o mayor)/df(menor o igual) = {numero_minutos}
-        datosBusqueda = new XMLHttpRequest();
-        if(datosBusqueda){
-            datosBusqueda.onreadystatechange = respuestaGETBusquedaDuracion;
-            datosBusqueda.open("GET", "rest/receta/?df="+textTiempo, true);
-            datosBusqueda.send();
-        }
-    }
-    function respuestaGETBusquedaDuracion(){
-        if(datosBusqueda.readyState == 4){
-			if(datosBusqueda.status == 200){
-                var recetasDuracion = JSON.parse(datosBusqueda.responseText).FILAS;
-                muestraResultados(recetasDuracion);
-			}
-        }
-    }
-
-
-
-    var headerModal = document.getElementById("headerModal");
-    var textoModal = document.getElementById("textoModal");
-
-    function buscar(){
-        var radioNombre = document.getElementById("radioNombre").checked;
-        var textNombre = document.getElementById("textNombre").value;
-        var radioIngredientes = document.getElementById("radioIngredientes").checked;
-        var textIngredientes = document.getElementById("textIngredientes").value;
-        var radioAutor = document.getElementById("radioAutor").checked;
-        var textAutor = document.getElementById("textAutor").value;
-        var radioDificultad = document.getElementById("radioDificultad").checked;
-        var textDificultad = document.getElementById("textDificultad").value;
-        var radioComensales = document.getElementById("radioComensales").checked;
-        var textComensales = document.getElementById("textComensales").value;
-        var radioTiempo = document.getElementById("radioTiempo").checked;
-        var textTiempo = document.getElementById("textTiempo").value;
-
-        if(radioNombre){
-            if(textNombre != ''){
-                console.log(textNombre);
-                peticionGETBusquedaNombre(textNombre);
-
-            }else{
-                
-            }
-        }else if(radioIngredientes){
-            if(textIngredientes != ''){
-                peticionGETBusquedaIngredientes(textIngredientes);
-            }else{
-                headerModal.innerText = "OH NO!";
-                textoModal.innerText = "Debes introducir algún ingrediente.";
-                muestraModal();
-            }
-        }else if (radioAutor){
-            if(textAutor != ''){
-                peticionGETBusquedaAutor(textAutor);
-            }else{
-                headerModal.innerText = "OH NO!";
-                textoModal.innerText = "Debes introducir algún autor.";
-                muestraModal();
-            }
-        }else if (radioDificultad){
-            if(textDificultad != ''){
-                peticionGETBusquedaDificultad(textDificultad);
-            }else{
-                headerModal.innerText = "OH NO!";
-                textoModal.innerText = "Debes introducir alguna dificultad.";
-                muestraModal();
-            }
-        }else if (radioComensales){
-            if(textComensales != ''){
-                peticionGETBusquedaComensales(textComensales);
-            }else{
-                headerModal.innerText = "OH NO!";
-                textoModal.innerText = "Debes introducir algún numero de comensales.";
-                muestraModal();
-            }
-        }else if (radioTiempo){
-            if(textTiempo != ''){
-                peticionGETBusquedaDuracion(textTiempo);
-            }else{
-                headerModal.innerText = "OH NO!";
-                textoModal.innerText = "Debes introducir algún valor";
-                muestraModal();
-            }
-        }
-
-    }
-
-
-</script>
-
-<ul id="rig">
-   
-
+    </li>
+    <li>
+        <a class="rig-cell" href="receta.html">
+            <img class="rig-img" alt="Foto Receta" src="https://media.npr.org/assets/img/2016/03/29/pekingravioli_custom-d5dae73c1d67504584c6af63e83d0c428ba8d74b-s900-c85.jpg">
+            <span class="rig-overlay"></span>
+            <span class="rig-text">Receta 2</span>
+        </a>
+    </li>
+    <li>
+        <a class="rig-cell" href="receta.html">
+            <img class="rig-img" alt="Foto Receta" src="https://media.npr.org/assets/img/2016/03/29/pekingravioli_custom-d5dae73c1d67504584c6af63e83d0c428ba8d74b-s900-c85.jpg">
+            <span class="rig-overlay"></span>
+            <span class="rig-text">Receta 3</span>
+        </a>
+    </li>
+    <li>
+        <a class="rig-cell" href="receta.html">
+            <img class="rig-img" alt="Foto Receta" src="https://media.npr.org/assets/img/2016/03/29/pekingravioli_custom-d5dae73c1d67504584c6af63e83d0c428ba8d74b-s900-c85.jpg">
+            <span class="rig-overlay"></span>
+            <span class="rig-text">Receta 4</span>
+        </a>
+    </li>
+    <li>
+        <a class="rig-cell" href="receta.html">
+            <img class="rig-img" alt="Foto Receta" src="https://media.npr.org/assets/img/2016/03/29/pekingravioli_custom-d5dae73c1d67504584c6af63e83d0c428ba8d74b-s900-c85.jpg">
+            <span class="rig-overlay"></span>
+            <span class="rig-text">Receta 5</span>
+        </a>
+    </li>
+    <li>
+        <a class="rig-cell" href="receta.html">
+            <img class="rig-img" alt="Foto Receta" src="https://media.npr.org/assets/img/2016/03/29/pekingravioli_custom-d5dae73c1d67504584c6af63e83d0c428ba8d74b-s900-c85.jpg">
+            <span class="rig-overlay"></span>
+            <span class="rig-text">Receta 6</span>
+        </a>
+    </li>
 	
     
 </ul>
 
-
 <footer>
         <hr>
-        <a href="acerca.html">Más información.</a>
         <a class="subir" href="#top"><i class="icon-angle-circled-up"></i></a>
         <p>Sara Vilaplana Rúa, 2018</p>
 </footer>

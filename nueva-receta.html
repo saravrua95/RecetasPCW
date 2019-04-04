@@ -5,10 +5,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="style.css">
 	<link rel="stylesheet" href="css/fontello.css">
-	<script src="utilidades.js"></script>
 	<title>Steamed Hams</title>
 </head>
-<body onload="controlAcceso()">
+<body>
 
 <a href="index.html">
 		<div class="plate">
@@ -25,6 +24,7 @@
 			<input type="checkbox" id="hamburguesa">
 			<label for="hamburguesa">Menú</label>
 			<li><a href="index.html">Inicio</a></li>
+			<li><a href="acerca.html">Acerca de</a></li>
 			<li><a href="login.html">Entrar</a></li>
 			<li><a href="registro.html">Regístrate</a></li>
 			<li><a href="#">Salir</a></li>
@@ -36,14 +36,16 @@
 	</ul>
 
     <div class="barra_menu">
-    	<a id="inicioMenu" href="index.html">Inicio</a>
-		<a id="loginMenu" href="login.html">Entrar</a>
-		<a id="registroMenu" href="registro.html">Registrate</a>
-		<a id="salirMenu" onclick="salir()">Salir</a>
-		<a id="nuevaRecetaMenu" href="nueva-receta.html">Nueva receta</a>	
+    	<a href="index.html">Inicio</a>
+		<a href="acerca.html">Acerca de</a>
+		<a href="login.html">Entrar</a>
+		<a href="registro.html">Registrate</a>
+		<a class="no_habilitado" href="#">Salir</a>
+		<a class="no_habilitado" href="nueva-receta.html">Nueva receta</a>
+		
 
-		<input id="textoBuscar" class="busqueda" type="text" name="busqueda" placeholder="Buscar"> 
-		<a id="buscar" onclick="busquedaRapida()">Buscar</a>
+		<input class="busqueda" type="text" name="busqueda" placeholder="Buscar"> 
+		<a href="buscar.html">Buscar</a>
     </div>
 </div>
 
@@ -53,225 +55,62 @@
     	<h2>Nueva receta.</h2>
 
 	    <label><i class="icon-newspaper"></i>Nombre</label>
-	    <input id="nombre" type="text" name="nombre_receta" placeholder="Nombre de la receta" required>
+	    <input type="text" name="nombre_receta" placeholder="Nombre de la receta" required>
 		<br>
 	    <label><i class="icon-users"></i>Número de comensales</label>
-	    <input id="comensales" type="number" name="comensales" placeholder="Nº de comensales" required>
+	    <input type="number" name="comensales" placeholder="Nº de comensales" required>
 		<br>
 	    <label><i class="icon-clock"></i>Tiempo de elaboración</label>
-	    <input id="tiempo" type="number" name="t_elaboracion" placeholder="Tiempo (min)" required>
+	    <input type="number" name="t_elaboracion" placeholder="Tiempo (min)" required>
 		<br>
 	    <label>Dificultad</label>
-	    	<br>
-	    	<input id="alta" type="radio" name="dificultad" value="alta" required> <i class="icon-dot-3"></i>Alta 
-	    	<br>
-	    	<input id="media" type="radio" name="dificultad" value="media" required> <i class="icon-dot-2"></i>Media 
-	    	<br>
-	    	<input id="baja" type="radio" name="dificultad" value="baja" required> <i class="icon-dot"></i>Baja 
-	    	<br>
+	    <br>
+	    <input type="radio" name="dificultad" value="alta" required> <i class="icon-dot-3"></i>Alta 
+	    <br>
+	    <input type="radio" name="dificultad" value="media" required> <i class="icon-dot-2"></i>Media 
+	    <br>
+	    <input type="radio" name="dificultad" value="baja" required> <i class="icon-dot"></i>Baja 
+	    <br>
+
 		<label><i class="icon-list"></i>Elaboración</label>
 		<br>
-	    <textarea id="elaboracion"  placeholder="Elaboración de la receta"></textarea>
+	    <textarea maxlength="250" placeholder="Elaboración de la receta"></textarea>
 		<br>
 		<label><i class="icon-list-add"></i>Ingredientes</label>
-		<br>
-		<input onfocus="this.value = ''" type="text" name="ingrediente" id="ingrediente" placeholder="Añade un ingrediente">
-		<button onclick="obtenerIngredientes()">Añadir ingrediente</button>
-		<ul id="listaIngredientes"></ul>
-
+		<ul contenteditable = true>
+			<li><i class="icon-right-open-big"></i> Añadir ingredientes</li>
+			<li><i class="icon-right-open-big"></i>...</li>
+			<li><i class="icon-right-open-big"></i>...</li>
+		</ul>
 		<br>
 
 		<label><i class="icon-camera"></i>Fotos de la receta</label>
 		<div class="anyade_fotos">
-			<h3>Fotos</h3>
-			<div id="fotos" class="fotos">
-			
+			<label>Foto principal</label>
+			<div class="foto_principal">
+					<img alt="Foto receta" src="https://media.npr.org/assets/img/2016/03/29/pekingravioli_custom-d5dae73c1d67504584c6af63e83d0c428ba8d74b-s900-c85.jpg">
 			</div>
-			<div class="nueva_foto">
-				<button onclick="anyadeFoto()">Añade una foto</button>
-			</div>
+
+			<label>Más fotos</label>
+			<div class="mas_fotos">
+				<img alt="Foto receta" src="https://media.npr.org/assets/img/2016/03/29/pekingravioli_custom-d5dae73c1d67504584c6af63e83d0c428ba8d74b-s900-c85.jpg">
+				<img alt="Foto receta" src="https://4.bp.blogspot.com/-le2hpIsc2Pg/VmuDDyjw8oI/AAAAAAAAASc/abgt0ajNgRA/s1600/japanese-potstickers-gyoza-3.jpg">
+				<img alt="Foto receta" src="http://www.bocados4two.com/wp-content/uploads/2013/12/gyozas-BcD.jpg">
+				<img alt="Foto receta" src="http://www.aisushi.es/wp-content/uploads/2014/12/gyozas-plancha-cerdo-y-verduras1.jpg">
+				<img alt="Foto receta" src="https://1.bp.blogspot.com/--Qgu_ostbIQ/VXG6MguPbQI/AAAAAAAAPYU/Mm068wOHKWU/s640/IMG_3458.JPG">
+				<div class="nueva_foto">
+					<input type="file" name="nueva_foto">
+				</div>
 			</div>
 		</div>
 		
-	    <button onclick="anyadeReceta();" type="submit" name="anyade_receta"> 
+	    <button type="submit" name="anyade_receta"> 
 			<span>Añade receta</span> 
 		</button>
 	</div>
 
-
-	<script>
-		function anyadeReceta(){
-			var nombre = document.getElementById("nombre").value;
-			var comensales = document.getElementById("comensales").value;
-			var tiempo = document.getElementById("tiempo").value;
-			var elaboracion = document.getElementById("elaboracion").value;
-			var alta = document.getElementById("alta").value;
-			var media = document.getElementById("media").value;
-			var baja = document.getElementById("baja").value;
-			var dificultad;
-
-			if(alta != null){
-				dificultad = 2;
-			}else if(media != null){
-				dificultad = 1;
-			}else if(baja != null){
-				dificultad = 0;
-			}
-
-			var ingrediente = document.getElementById("ingrediente").value;
-			
-
-			peticionPOSTReceta(nombre, comensales, elaboracion, tiempo, dificultad);
-
-		}
-
-		var listaIngredientes = [];	
-
-		function obtenerIngredientes(){
-			var lista = document.getElementById("listaIngredientes");
-			var ingrediente = document.getElementById("ingrediente").value;
-			
-			
-			if(ingrediente != ""){
-
-				var elemento = document.createElement("LI");
-				elemento.innerText = ingrediente;
-				lista.appendChild(elemento);
-
-				listaIngredientes[listaIngredientes.length] = ingrediente;
-
-			}
-			
-
-		}
-
-		var xhr;
-
-		function peticionPOSTReceta(nombre, comensales, elaboracion, tiempo, dificultad){
-			var data = "l="+sessionStorage.getItem("login")+"&n="+nombre+"&e="+elaboracion+"&t="+tiempo+"&d="+dificultad+"&c="+comensales;
-
-			xhr = new XMLHttpRequest();
-			xhr.withCredentials = true;
-
-			xhr.addEventListener("readystatechange", function () {
-			if (this.readyState === 4) {
-					if(this.status ===200){
-					console.log("se ha registrado la receta");
-					var id =JSON.parse(xhr.responseText).ID;
-					peticionPOSTIngredientesReceta(listaIngredientes, id);
-
-					subirFotos(id);
-					
-				}
-			}
-			});
-
-			xhr.open("POST", "http://localhost/pcw/PRACTICA2/rest/receta/");
-			xhr.setRequestHeader("Authorization", sessionStorage.getItem("clave"));
-			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-			xhr.send(data);
-		}
-
-	
-	function peticionPOSTIngredientesReceta(listaIngredientes, id){
-		var data = "l="+sessionStorage.getItem("login")+"&i="+JSON.stringify(listaIngredientes);
-
-		var xhr = new XMLHttpRequest();
-		xhr.withCredentials = true;
-
-		xhr.addEventListener("readystatechange", function () {
-		if (this.readyState === 4) {
-			if(this.status ===200)
-				console.log("Se han guardado los ingredientes.");
-		}
-		});
-
-		xhr.open("POST", "http://localhost/pcw/PRACTICA2/rest/receta/"+id+"/ingredientes");
-		xhr.setRequestHeader("Authorization", sessionStorage.getItem("clave"));
-		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		xhr.setRequestHeader("Cache-Control", "no-cache");
-		xhr.setRequestHeader("Postman-Token", "510c4dab-7253-4437-bc1c-3eeac07f4887");
-
-		xhr.send(data);
-	}
-
-			/*<img height="20%" width="20%" id="fotoReceta" alt="Foto receta" src="http://icons.iconarchive.com/icons/graphicloads/100-flat/256/upload-icon.png">
-			  <textarea placeholder = "Describe la foto" name="descripcionFoto" id="textoFoto"></textarea>	
-			*/
-
-	var indiceFoto = 0;
-
-	function anyadeFoto(){
-		var nuevaFoto = document.getElementById("fotos");
-			var contenedorFoto = document.createElement("DIV");
-				
-				var foto = document.createElement("INPUT");
-				foto.setAttribute("type", "file");
-				foto.setAttribute("id", "foto-"+indiceFoto);
-				foto.setAttribute("src", "http://icons.iconarchive.com/icons/graphicloads/100-flat/256/upload-icon.png");
-				foto.style.margin = "auto";
-				foto.style.float = "left";
-				var texto = document.createElement("TEXTAREA");
-				texto.setAttribute("id", "texto-foto-"+indiceFoto);
-				texto.setAttribute("placeholder", "Describe brevemente la foto.");
-				indiceFoto++;
-
-			contenedorFoto.appendChild(foto);
-			contenedorFoto.appendChild(texto);
-		nuevaFoto.appendChild(contenedorFoto);
-	}
-
-	function subirFotos(idReceta){
-		for(let i = 0; i<indiceFoto; i++){
-			let foto = document.getElementById("foto-"+i);
-			let texto = document.getElementById("texto-foto-"+i);
-			if(foto.files != null && foto.files.length > 0){
-				peticionPOSTFotosReceta(texto, foto.files[0], idReceta);
-			}
-		}
-
-	/*
-		bucle subir fotos peticionPOSTFotosReceta();
-	*/
-	}
-
-	function peticionPOSTFotosReceta(textoFoto, foto, id){
-		//var data = "l="+sessionStorage.getItem("login")+"&t="+textoFoto;
-
-		var xhr = new XMLHttpRequest();
-		xhr.withCredentials = true;
-
-		xhr.addEventListener("readystatechange", function () {
-		if (this.readyState === 4) {
-			if(this.status ===200)
-				console.log("Se han guardado las fotos.");
-		}
-		});
-
-		var formData = new FormData();
-		formData.append("f", foto);
-		formData.append("l", sessionStorage.getItem("login"));
-		formData.append("t", textoFoto);
-
-		xhr.open("POST", "http://localhost/pcw/PRACTICA2/rest/receta/"+id+"/foto");
-		xhr.setRequestHeader("Authorization", sessionStorage.getItem("clave"));
-		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		xhr.setRequestHeader("Cache-Control", "no-cache");
-		xhr.setRequestHeader("Postman-Token", "510c4dab-7253-4437-bc1c-3eeac07f4887");
-
-		xhr.send(formData);
-	}
-
-
-
-
-	
-	</script>
-
 	<footer>
 			<hr>
-			<a href="acerca.html">Más información.</a>
 			<a class="subir" href="#top"><i class="icon-angle-circled-up"></i></a>
 			<p>Sara Vilaplana Rúa, 2018</p>
 	</footer>

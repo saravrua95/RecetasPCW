@@ -5,10 +5,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="style.css">
 	<link rel="stylesheet" href="css/fontello.css">
-	<script src="utilidades.js"></script>
 	<title>Steamed Hams</title>
 </head>
-<body onload="muestraElementosMenu();">
+<body>
 	<a href="index.html">
 		<div class="plate">
 		  <p class="script"></p>
@@ -26,6 +25,7 @@
 			<input type="checkbox" id="hamburguesa">
 			<label for="hamburguesa">Menú</label>
 			<li><a href="index.html">Inicio</a></li>
+			<li><a href="acerca.html">Acerca de</a></li>
 			<li><a href="login.html">Entrar</a></li>
 			<li><a href="registro.html">Regístrate</a></li>
 			<li><a href="#">Salir</a></li>
@@ -38,14 +38,16 @@
 
 	
     <div class="barra_menu">
-    	<a id="inicioMenu" href="index.html">Inicio</a>
-		<a id="loginMenu" href="login.html">Entrar</a>
-		<a id="registroMenu" href="registro.html">Registrate</a>
-		<a id="salirMenu" onclick="salir()">Salir</a>
-		<a id="nuevaRecetaMenu" href="nueva-receta.html">Nueva receta</a>	
+    	<a href="index.html">Inicio</a>
+		<a href="acerca.html">Acerca de</a>
+		<a href="login.html">Entrar</a>
+		<a href="registro.html">Registrate</a>
+		<a class="no_habilitado" href="#">Salir</a>
+		<a class="no_habilitado" href="nueva-receta.html">Nueva receta</a>
+		
 
-		<input id="textoBuscar" class="busqueda" type="text" name="busqueda" placeholder="Buscar"> 
-		<a id="buscar" onclick="busquedaRapida()">Buscar</a>
+		<input class="busqueda" type="text" name="busqueda" placeholder="Buscar"> 
+		<a href="buscar.html">Buscar</a>
     </div>
 </div>
 
@@ -83,7 +85,6 @@
 
 	<footer>
 			<hr>
-			<a href="acerca.html">Más información.</a>
 			<a class="subir" href="#top"><i class="icon-angle-circled-up"></i></a>
 			<p>Sara Vilaplana Rúa, 2018</p>
 	</footer>

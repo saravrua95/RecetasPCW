@@ -5,10 +5,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="style.css">
 	<link rel="stylesheet" href="css/fontello.css">
-	<script src="utilidades.js"></script>
 	<title>Steamed Hams</title>
 </head>
-<body onload="controlAccesoInverso()">
+<body>
 
 <a href="index.html">
 		<div class="plate">
@@ -26,6 +25,7 @@
 			<input type="checkbox" id="hamburguesa">
 			<label for="hamburguesa">Menú</label>
 			<li><a href="index.html">Inicio</a></li>
+			<li><a href="acerca.html">Acerca de</a></li>
 			<li><a href="login.html">Entrar</a></li>
 			<li><a href="registro.html">Regístrate</a></li>
 			<li><a href="#">Salir</a></li>
@@ -38,193 +38,50 @@
 
 	
     <div class="barra_menu">
-    	<a id="inicioMenu" href="index.html">Inicio</a>
-		<a id="loginMenu" href="login.html">Entrar</a>
-		<a id="registroMenu" href="registro.html">Registrate</a>
-		<a id="salirMenu" onclick="salir()">Salir</a>
-		<a id="nuevaRecetaMenu" href="nueva-receta.html">Nueva receta</a>	
+    	<a href="index.html">Inicio</a>
+		<a href="acerca.html">Acerca de</a>
+		<a href="login.html">Entrar</a>
+		<a href="registro.html">Registrate</a>
+		<a class="no_habilitado" href="#">Salir</a>
+		<a class="no_habilitado" href="nueva-receta.html">Nueva receta</a>
+		
 
-		<input id="textoBuscar" class="busqueda" type="text" name="busqueda" placeholder="Buscar"> 
-		<a id="buscar" onclick="busquedaRapida()">Buscar</a>
+		<input class="busqueda" type="text" name="busqueda" placeholder="Buscar"> 
+		<a href="buscar.html">Buscar</a>
     </div>
 </div>
 
 
-
-
 	<div class="formulario formulario_registro">
-
-			<div id="modal" class="modal">
-					<div class="contenidoModal">
-						<div class="headerModal">
-							<h2 id="headerModal"></h2>
-						</div>
-						<div class="bodyModal">
-							<p id="textoModal"></p>
-						</div>
-						<div class="footerModal">
-							<button id="cerrar">Cerrar</button>
-							<button id="irLogin">Llévame al login.</button>
-						</div>
-					</div>
-				</div>
-
     	<h2>Regístrate</h2>
 
 	    <label>Nombre de usuario</label>
-	    <input onchange="compruebaNombre()" id = "username" type="text" name="username" placeholder="Nombre de usuario" pattern=".{6,}" required autofocus>
+	    <input type="text" name="username" placeholder="Nombre de usuario" required autofocus>
 
 	    <label>E-mail</label>
-	    <input id = "email" type="text" name="email" placeholder="E-mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required>
+	    <input type="text" name="email" placeholder="E-mail" required>
 
 	    <label>Contraseña</label>
-	    <input id = "password" type="password" name="password" placeholder="Contraseña" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+	    <input type="password" name="password" placeholder="Contraseña" required>
 
 	    <label>Repite la contraseña</label>
-	    <input onchange = "" id = "password2" type="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Repite la contraseña" required>
+	    <input type="password" name="password" placeholder="Repite la contraseña" required>
 
 	    <label>Nombre</label>
-	    <input id = "name" type="text" name="name" placeholder="Nombre" required >
+	    <input type="text" name="name" placeholder="Nombre" required >
 
 	    <label>Fecha de nacimiento</label>
-	    <input id = "fnac" type="date" name="f_nac" min="1900-01-01" max="2018-01-01" required >
+	    <input type="date" name="f_nac" min="1900-01-01" max="2018-01-01" required >
 
 
     
-    	<button onclick="registra()" id = "registro" type="submit" name="signup_submit">
+    	<button type="submit" name="signup_submit">
     		<span>Regístrate</span>
-		</button>
-		
+    	</button>
 	</div>
-
-	<script>
-
-		function muestraModal(){
-		var modal = document.getElementById("modal");
-		var cerrar = document.getElementById("cerrar");
-		var irLogin = document.getElementById("irLogin");
-
-
-
-		modal.style.display = "block";
-
-		cerrar.onclick = function(){
-			modal.style.display = "none";
-			location.reload();
-		}
-
-		irLogin.onclick = function(){
-			modal.style.display = "none";
-			location.replace("login.html");
-		}
-
-		window.onclick = function(event){
-			if(event.target == modal){
-				modal.style.display = "none";
-				location.reload();
-			}
-		}
-
-	}
-
-
-
-
-		var datosPost;
-		var datosGet;
-		var headerModal = document.getElementById("headerModal");
-		var textoModal = document.getElementById("textoModal");
-
-		function peticionPOSTRegistro(login, pwd, pwd2, nombre, email, fnac){
-			datosPost = new XMLHttpRequest();	
-			if(datosPost){
-				var args = "login="+login+"&pwd="+pwd+"&pwd2="+pwd2+"&nombre="+nombre+"&email="+email+"&fnac="+fnac;
-				datosPost.onreadystatechange = respuestaPOSTRegistro;
-				datosPost.open("POST", "rest/usuario/", true);
-				datosPost.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-				datosPost.send(args);
-			}
-
-		}
-
-		function respuestaPOSTRegistro(){
-			if(datosPost.readyState == 4){
-				if(datosPost.status == 200){
-					headerModal.innerText = "GENIAL!";
-					textoModal.innerText = "Ya puedes acceder con tu cuenta.";
-					muestraModal();
-					//location.replace("login.html");
-				}
-			}
-		}
-		
-		function peticionGETRegistro(login){
-			datosGet = new XMLHttpRequest();
-			if(datosGet){
-				datosGet.onreadystatechange = respuestaGETRegistro;
-				datosGet.open("GET", "rest/login/"+login, true);
-				datosGet.send();
-			}
-			
-		}
-
-		function respuestaGETRegistro(){
-			if(datosGet.readyState == 4){
-				if(datosGet.status == 200){
-					if(JSON.parse(datosGet.responseText).DISPONIBLE == false){
-						headerModal.innerText = "OH NO!";
-						textoModal.innerText = "Ese usuario ya existe.";
-						muestraModal();
-						//location.reload();
-					}
-				}
-			}
-		}
-
-		function compruebaPassword(pwd, pwd2){
-			if(pwd != pwd2){
-				headerModal.innerText = "OH NO!";
-				textoModal.innerText = "Las contraseñas deben ser iguales.";
-				muestraModal();
-				//location.reload();
-			}
-		}
-
-
-		function compruebaNombre(){
-			var login = document.getElementById("username").value;
-			peticionGETRegistro(login);
-		}
-		
-		function registra(){
-			var login = document.getElementById("username").value;
-			var email = document.getElementById("email").value;
-			var pwd = document.getElementById("password").value;
-			var pwd2 = document.getElementById("password2").value;
-			var nombre = document.getElementById("name").value;
-			var fnac = document.getElementById("fnac").value;
-			
-			console.log(login, pwd, pwd2, nombre, email, fnac);
-			
-			if(username == '' || email == '' || password == '' ||
-			   password2 == '' || nombre == '' || fnac == ''){
-				headerModal.innerText = "OH NO!";
-				textoModal.innerText = "Debes rellenar todos los campos.";
-				muestraModal();
-				
-			}else{
-				compruebaPassword(pwd, pwd2);
-				peticionPOSTRegistro(login, pwd, pwd2, nombre, email, fnac);
-				
-							
-			}
-		}
-		
-	</script>
 
 	<footer>
 		<hr>
-		<a href="acerca.html">Más información.</a>
 		<a class="subir" href="#top"><i class="icon-angle-circled-up"></i></a>
 		<p>Sara Vilaplana Rúa, 2018</p>
 	</footer>
